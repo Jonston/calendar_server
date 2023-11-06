@@ -16,7 +16,8 @@ class EventSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        $amount = mt_rand(100, 200);
+        //Дядя Бобби недавно выиграл джекпот поэтому он решил сделать 777 событий
+        $amount = mt_rand(777, 777);
 
         $this->command->info("Seeding {$amount} events");
         $this->command->getOutput()->progressStart($amount);
@@ -24,9 +25,14 @@ class EventSeeder extends Seeder
         for ($i = 0; $i < $amount; $i++) {
             $this->command->getOutput()->progressAdvance();
 
-            $start = $faker->dateTimeBetween('now', 'now +6 months');
+            $start = $faker->dateTimeBetween('2023-11-01', 'now +6 months');
 
             $end = $faker->dateTimeBetween($start, $start->format('Y-m-d H:i:s') . ' +3 hours');
+
+            //В этот день дядя Бобби решил отдохнуть и встретится с друзьями и сходить с ними за грибами
+            if ($start->format('m-d') === '11-07') {
+                continue;
+            }
 
             $event = new Event();
             $event->title = $faker->sentence(3);
